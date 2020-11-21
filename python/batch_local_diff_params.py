@@ -1,5 +1,6 @@
 """
 Written by: Anthony Badea (June 2020)
+Modified by: Evan Craft (November 2020)
 
 Runs batch_local.py for a variety of settings
 
@@ -62,7 +63,7 @@ def make_jobs(nKillPCBJobs = 0, # Number of different configurations of randomly
 			  nKillPCBs = 0, # Number of PCBs to randomly kill
 			  fullEff = 1.0, # Efficiency of full efficienct PCB 
 			  dead_PCB_eff = 0.0, # Efficiency for killed PCBs
-			  outDir = "/Users/anthonybadea/Documents/ATLAS/oct_sim/work"
+			  outDir = "/Users/evancraft/Documents/"
 			  ):
 	jobs = {}
 	job_full_eff = {'nJobs':1,
@@ -87,7 +88,7 @@ def make_jobs(nKillPCBJobs = 0, # Number of different configurations of randomly
 # Input: job arguments
 # Output: None, calls the job operation 
 def run_job(nJobs = 1,
-			outDir = "/Users/anthonybadea/Documents/ATLAS/oct_sim/work", # Not currently used 
+			outDir = "/Users/evancraft/Documents/", # Not currently used 
 		    nEvents = 100,
 		    chamber = 'large',
 		    bkgRate = 1,
@@ -103,7 +104,7 @@ def run_job(nJobs = 1,
 
 # Input: None
 # Output: None
-def main(nKillPCBJobs = 1, nKillPCBs = 16, fullEff = 1.0, outDir = "/Users/anthonybadea/Documents/ATLAS/oct_sim/work"):
+def main(nKillPCBJobs = 1, nKillPCBs = 16, fullEff = 1.0, outDir = "/Users/evancraft/Documents/"):
 	jobs = make_jobs(nKillPCBJobs = nKillPCBJobs, nKillPCBs = nKillPCBs, fullEff = fullEff, outDir = outDir)
 
 	# Run in parallel 
@@ -118,10 +119,12 @@ def main(nKillPCBJobs = 1, nKillPCBs = 16, fullEff = 1.0, outDir = "/Users/antho
 	print('That took {} seconds'.format(time.time() - starttime)) 
 
 def loop():
-	for fullEff in [0.1]:#np.linspace(0,1,11):
-		outDir = "/Users/anthonybadea/Documents/ATLAS/oct_sim/work" + "/fullEff%.2f"%fullEff
+	fullEff = 0.1;
+	for i in range(10):#np.linspace(0,1,11):
+		outDir = "/Users/evancraft" + "/fullEff%.2f"%fullEff
 		os.mkdir(outDir)
-		main(nKillPCBJobs=10,nKillPCBs=0,fullEff=round(fullEff,2),outDir=outDir)
+		main(nKillPCBJobs=3,nKillPCBs=0,fullEff=round(fullEff,2),outDir=outDir)
+		fullEff = fullEff + .1;
 
 if __name__ == "__main__":
     loop()
