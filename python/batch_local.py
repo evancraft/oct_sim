@@ -7,7 +7,7 @@ Run like:
 To set the seed based on job number, use "-seed \$SLURM_JOB_ID" in the -a arguments.
 
 Written by: Ann Wang and Alexander Tuna
-Modified by: Anthony Badea (June 2020)
+Modified by: Anthony Badea (June 2020), Evan Craft (November 2020)
 """
 
 import argparse
@@ -28,7 +28,7 @@ def main():
         fatal("Please provide a string of arguments for the sim with -a")
     if not ops.o:
         dirname = "batch-%s" % (now)
-        topdir  = "/Users/anthonybadea/Documents/ATLAS/oct_sim/work" if not ops.NET3 else "/gpfs3/harvard/oct_sim"
+        topdir  = "/Users/evancraft/" if not ops.NET3 else "/gpfs3/harvard/oct_sim"
         ops.o   = os.path.join(topdir, dirname)
     else:
         dirname = "batch-%s" % (now)
@@ -51,12 +51,12 @@ def main():
 
     # announce
     print
-    print "Output directory :: %s" % (config["outdir"])
-    print "N(jobs)          :: %s" % (config["jobs"])
-    print "User args        :: %s" % (config["argparse"])
+    print("Output directory :: %s" % (config["outdir"]))
+    print("N(jobs)          :: %s" % (config["jobs"]))
+    print("User args        :: %s" % (config["argparse"]))
     print
 
-    for job in xrange(config["jobs"]):
+    for job in range(config["jobs"]):
         config["jobdir"]  = os.path.join(config["outdir"], "job_%04i" % (job))
         config["jobname"] = os.path.join(config["jobdir"], "job.sh")
         config["output"]  = os.path.join(config["jobdir"], "output.root")
@@ -92,7 +92,7 @@ def main():
             errfile.write(stderr)
             errfile.close()
 
-            print "Submitted %4i / %4i @ %s" % (job+1, config["jobs"], time.strftime("%Y-%m-%d-%Hh%Mm%Ss"))
+            print ("Submitted %4i / %4i @ %s" % (job+1, config["jobs"], time.strftime("%Y-%m-%d-%Hh%Mm%Ss")))
 
     print
 
@@ -138,15 +138,15 @@ def double_check(stdout, stderr, cmd):
         tries = 1
         print("Printing stdout %s\n"%stdout.replace("\n"," "))
         while not stdout:
-            print "Trying to resubmit because stdout is blank. Try: %s" % (tries)
+            print("Trying to resubmit because stdout is blank. Try: %s" % (tries))
             proc = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
             stdout, stderr = proc.communicate()
             tries += 1
             time.sleep(30)
             # fatal("no Popen.stdout for sbatch")
     if stderr:
-        print "--------------- Popen.stderr --------------------"
-        print stderr
+        print("--------------- Popen.stderr --------------------")
+        print(stderr)
 
 def fatal(msg):
     sys.exit("Fatal error: %s" % (msg))
