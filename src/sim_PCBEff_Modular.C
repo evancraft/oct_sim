@@ -324,9 +324,9 @@ int main(int argc, char* argv[]) {
         printf("Muon hit (board, BC, strip): (%d,%d,%4.4f)\n", hits[j]->MMFE8Index(),hits[j]->Age(),hits[j]->Channel());
       }
     }
-    if (n_x1 > 0 && n_x2 > 0 && n_u > 0 && n_v > 0){
+    if (((n_x1 + n_x2) >= m_xthr) && ((n_u + n_v) >= m_uvthr)){
       nmuon_trig++;
-      muon_trig_ok= true; 
+      muon_trig_ok= true;
     }
 
     double smallest_bc = 999999.;
